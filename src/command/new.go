@@ -1,12 +1,12 @@
 package command
 
 import (
-	"fmt"
 	"path"
 	"log"
 	"os"
 	"github.com/goatcms/goat-core/filesystem"
 	"github.com/goatcms/goat-core/system"
+	"github.com/goatcms/goat-core/scaffolding"
 )
 
 func NewCommand(args []string) {
@@ -34,11 +34,19 @@ func NewCommand(args []string) {
 		url = "github.com/goatcms/goat-app"
 	}
 
-	result, err := system.RunCommand("go", "get", url)
-	if err != nil {
-		log.Printf("Can not clone repositiory %s", err)
-		return
+	if !filesystem.IsDir(path.Join(os.Getenv("GOPATH"), "src", url)) {
+		_, err := system.RunCommand("go", "load", url)
+		if err != nil {
+			log.Printf("Can not clone repositiory %s", err)
+			os.Exit(1)
+		}
 	}
 
-	log.Printf("%s", string(result))
+	err := scaffolding.Build(".", "./", []string{"el1", "el2"})
+	if err != nil {
+		log.Printf("Can not build a project", err)
+		os.Exit(1)
+	}
+
+	log.Printf("some end log")
 }

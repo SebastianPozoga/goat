@@ -1,19 +1,12 @@
 package main
 
 import (
-	//	"flag"
 	"fmt"
-	"os"
 	"github.com/goatcms/goat/src/command"
-)
-
-var (
-	// contain configuration
-	config map[string]string
+	"os"
 )
 
 const (
-	// The version of this tool
 	version = "0.0.1"
 )
 
@@ -24,7 +17,6 @@ func main() {
 	}
 
 	switch os.Args[1] {
-
 	case "new":
 		command.NewCommand(os.Args[2:])
 
@@ -35,12 +27,7 @@ func main() {
 		command.HelpCommand(os.Args[2:], version)
 
 	default:
-		consoleError("Unknow command")
+		fmt.Println("Error: Unknow command")
+		os.Exit(1)
 	}
-
-}
-
-func consoleError(msg string) {
-	fmt.Println("Error: " + msg)
-	os.Exit(1)
 }
