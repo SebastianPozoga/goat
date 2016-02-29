@@ -1,6 +1,7 @@
 package command
 
 import (
+	"fmt"
 	"github.com/goatcms/goat-core/filesystem"
 	"github.com/goatcms/goat-core/repos"
 	"github.com/goatcms/goat-core/scaffolding"
@@ -32,13 +33,15 @@ func NewCommand(args []string) {
 	switch url {
 	case "app":
 		url = "github.com/goatcms/goat-app"
+	case "go-project":
+		url = "github.com/goatcms/go-project"
 	}
 
-	repoPath, err := repos.Load(url)
+	/*repoPath, err := repos.Load(url)
 	if err != nil {
 		log.Printf("Can not clone git repositiory %s", err)
 		os.Exit(1)
-	}
+	}*/
 
 	destPath, err := repos.GetRepoPath(args[1])
 	if filesystem.FileExists(destPath) {
@@ -46,10 +49,16 @@ func NewCommand(args []string) {
 		os.Exit(1)
 	}
 
-	err = scaffolding.Build(repoPath, destPath, []string{
+	/*err = scaffolding.Build(repoPath, destPath, []string{
 		".git",
-	})
+	})*/
+	scaff, err := scaffolding.NewScaffolding(url)
 	if err != nil {
+		log.Printf("Scaffolding error ", args[1])
+		fmt.Println(err)
+		os.Exit(1)
+	}
+	if err = scaff.Build(destPath); err != nil {
 		log.Printf("Can not build a project", err)
 		os.Exit(1)
 	}
