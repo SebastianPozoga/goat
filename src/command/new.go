@@ -1,12 +1,12 @@
 package command
 
 import (
-	"path"
+	"github.com/goatcms/goat-core/filesystem"
+	"github.com/goatcms/goat-core/repos"
+	"github.com/goatcms/goat-core/scaffolding"
 	"log"
 	"os"
-	"github.com/goatcms/goat-core/filesystem"
-	"github.com/goatcms/goat-core/system"
-	"github.com/goatcms/goat-core/scaffolding"
+	"path"
 )
 
 func NewCommand(args []string) {
@@ -34,19 +34,25 @@ func NewCommand(args []string) {
 		url = "github.com/goatcms/goat-app"
 	}
 
-	if !filesystem.IsDir(path.Join(os.Getenv("GOPATH"), "src", url)) {
-		_, err := system.RunCommand("go", "load", url)
-		if err != nil {
-			log.Printf("Can not clone repositiory %s", err)
-			os.Exit(1)
-		}
+	repoPath, err := repos.Load(url)
+	if err != nil {
+		log.Printf("Can not clone git repositiory %s", err)
+		os.Exit(1)
 	}
 
-	err := scaffolding.Build(".", "./", []string{"el1", "el2"})
+	destPath, err := repos.GetRepoPath(args[1])
+	if filesystem.FileExists(destPath) {
+		log.Printf("Directory %s exists", args[1])
+		os.Exit(1)
+	}
+
+	err = scaffolding.Build(repoPath, destPath, []string{
+		".git",
+	})
 	if err != nil {
 		log.Printf("Can not build a project", err)
 		os.Exit(1)
 	}
 
-	log.Printf("some end log")
+	log.Printf("Created success")
 }
