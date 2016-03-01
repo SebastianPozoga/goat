@@ -37,21 +37,12 @@ func NewCommand(args []string) {
 		url = "github.com/goatcms/go-project"
 	}
 
-	/*repoPath, err := repos.Load(url)
-	if err != nil {
-		log.Printf("Can not clone git repositiory %s", err)
-		os.Exit(1)
-	}*/
-
 	destPath, err := repos.GetRepoPath(args[1])
 	if filesystem.FileExists(destPath) {
 		log.Printf("Directory %s exists", args[1])
 		os.Exit(1)
 	}
 
-	/*err = scaffolding.Build(repoPath, destPath, []string{
-		".git",
-	})*/
 	scaff, err := scaffolding.NewScaffolding(url)
 	if err != nil {
 		log.Printf("Scaffolding error ", args[1])
