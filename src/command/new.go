@@ -49,7 +49,7 @@ func NewCommand(args []string) {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-	if err = scaff.Build(destPath); err != nil {
+	if err = scaff.BuildProject(destPath); err != nil {
 		log.Printf("Can not build a project", err)
 		os.Exit(1)
 	}
