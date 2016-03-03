@@ -25,7 +25,7 @@ func SetWorkspaceCommand(s *settings.Settings, args []string) {
 	}
 
 	s.Workspace = workspacePath
-	if err = s.Write(); err!=nil {
+	if err = s.Write(); err != nil {
 		fmt.Println("no write goat setting file", err)
 		os.Exit(1)
 	}
@@ -48,9 +48,19 @@ func NewWorkspaceCommand(s *settings.Settings, args []string) {
 		os.Exit(1)
 	}
 
-	w := workspace.NewWorkspace(args[0])
+	w, err := workspace.NewWorkspace(args[0])
+	if err != nil {
+		fmt.Println("Create new workspace object fail", err)
+		os.Exit(1)
+	}
 	if err := w.Create(); err != nil {
 		fmt.Println("Create new workspace fail", err)
+		os.Exit(1)
+	}
+
+	s.Workspace = w.GetAbsPath()
+	if err = s.Write(); err != nil {
+		fmt.Println("no write goat setting file", err)
 		os.Exit(1)
 	}
 }

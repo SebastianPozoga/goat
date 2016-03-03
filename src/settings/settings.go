@@ -24,7 +24,6 @@ func NewSettings(version string) (*Settings, error) {
 	return &Settings{
 		path:      usr.HomeDir + settingsPath,
 		Workspace: os.Getenv("GOPATH"),
-		Version:   version,
 	}, nil
 }
 
