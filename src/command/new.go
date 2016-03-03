@@ -1,16 +1,17 @@
 package command
-
+/*
 import (
 	"fmt"
 	"github.com/goatcms/goat-core/filesystem"
 	"github.com/goatcms/goat-core/repos"
 	"github.com/goatcms/goat-core/scaffolding"
+	"github.com/goatcms/goat/src/settings"
 	"log"
 	"os"
 	"path"
 )
 
-func NewCommand(args []string) {
+func NewCommand(s *settings.Settings, args []string) {
 	if len(args) < 1 {
 		log.Printf("project type or url is required\n")
 		return
@@ -56,3 +57,4 @@ func NewCommand(args []string) {
 
 	log.Printf("Created success")
 }
+*/

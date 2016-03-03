@@ -2,9 +2,9 @@ package command
 
 import (
 	"fmt"
+	"github.com/goatcms/goat/src/settings"
 )
 
-func VersionCommand(args []string, version string) {
-	msg := fmt.Sprintf("%s", version)
-	fmt.Println(msg)
+func VersionCommand(s *settings.Settings, args []string) {
+	fmt.Println("%s", s.Version)
 }
