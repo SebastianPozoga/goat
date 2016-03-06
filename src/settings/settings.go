@@ -12,11 +12,10 @@ const (
 
 type Settings struct {
 	path      string
-	Version   string `json:"-"`
 	Workspace string `json:"workspace"`
 }
 
-func NewSettings(version string) (*Settings, error) {
+func NewSettings() (*Settings, error) {
 	usr, err := user.Current()
 	if err != nil {
 		return nil, err

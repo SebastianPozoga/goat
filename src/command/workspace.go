@@ -64,3 +64,10 @@ func NewWorkspaceCommand(s *settings.Settings, args []string) {
 		os.Exit(1)
 	}
 }
+
+func CleanWorkspaceCacheCommand(s *settings.Settings, args []string) {
+	if err := workspace.CleanWorkspaceCache(); err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+}

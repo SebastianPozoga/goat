@@ -4,13 +4,12 @@ import (
 	"fmt"
 	"github.com/goatcms/goat/src/command"
 	"github.com/goatcms/goat/src/settings"
-	"github.com/goatcms/goat/src/consts"
 	"os"
 	"strings"
 )
 
 func main() {
-	settings, err := settings.NewSettings(consts.Version)
+	settings, err := settings.NewSettings()
 	if err!=nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -32,6 +31,15 @@ func main() {
 
 	case "workspace:get":
 		command.GetWorkspaceCommand(settings, os.Args[2:])
+
+	case "workspace:cache:clean":
+		command.CleanWorkspaceCacheCommand(settings, os.Args[2:])
+
+	case "packages:add":
+		command.AddPackagCommand(settings, os.Args[2:])
+
+	case "packages:update":
+		command.UpdatePackagesCommand(settings, os.Args[2:])
 
 	/*case "new":
 	command.NewCommand(settings, os.Args[2:])*/
