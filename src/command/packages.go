@@ -35,7 +35,7 @@ func UpdatePackagesCommand(s *settings.Settings, args []string) {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-	if err := w.Packages.Update(); err != nil {
+	if err := w.Packages.UpdateAll(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
