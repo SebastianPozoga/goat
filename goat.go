@@ -53,6 +53,10 @@ func main() {
 	case "resource:model:add":
 		command.AddModelResourceCommand(settings, os.Args[2:])
 
+	//history
+	case "history:build":
+		command.BuildHistoryCommand(settings, os.Args[2:])
+
 	//module
 	case "module:add":
 		command.AddModuleCommand(settings, os.Args[2:])

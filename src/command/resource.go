@@ -42,7 +42,9 @@ func AddModelResourceCommand(s *settings.Settings, args []string) {
 		os.Exit(1)
 	}
 
-	modelData := interactive.Model{}
+	modelData := interactive.Model{
+		Fields: map[string]interactive.Field{},
+	}
 	if err := modelData.Scan(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)

@@ -3,6 +3,7 @@ package interactive
 import (
 	"fmt"
 	"github.com/goatcms/goat-core/varutil"
+	"strings"
 )
 
 var (
@@ -10,33 +11,41 @@ var (
 )
 
 type Field struct {
-	Type     string
-	Required bool
-	Min      int
-	Max      int
-	Attrs    []string
+	Type     string   `json:"type"`
+	Required bool     `json:"required"`
+	Min      int      `json:"min"`
+	Max      int      `json:"max"`
+	Attrs    []string `json:"attrs"`
 }
 
 func (f *Field) Scan() error {
 	var attrs string
 	var err error
-	fmt.Println("Insert field type: ", correctTypes)
+	fmt.Print(correctTypes, "?: ")
 	for true {
 		fmt.Scanln(&f.Type)
+		f.Type = strings.ToLower(f.Type)
 		if varutil.IsArrContainStr(correctTypes, f.Type) {
 			break
 		}
-		fmt.Println("Incorrect field type. Available types: ", correctTypes)
+		fmt.Print(correctTypes, "?: ")
 	}
-	fmt.Println("Min value of field: ")
+	fmt.Print("Min value of field: ")
 	fmt.Scan(&f.Min)
-	fmt.Println("Max value of field: ")
+	fmt.Print("Max value of field: ")
 	fmt.Scan(&f.Max)
-	fmt.Println("Insert field attrs: ")
-	fmt.Scan(&attrs)
-	f.Attrs, err = varutil.SplitWhite(attrs)
-	if err != nil {
-		return err
+
+	var isAttrs string
+	fmt.Print("Do you want add attribiutes? ")
+	fmt.Scan(&isAttrs)
+	isAttrs = strings.ToLower(isAttrs)
+	if isAttrs == "yes" || isAttrs == "y" {
+		fmt.Print("Insert field attrs (separated with space): ")
+		fmt.Scan(&attrs)
+		f.Attrs, err = varutil.SplitWhite(attrs)
+		if err != nil {
+			return err
+		}
 	}
 	return nil
 }

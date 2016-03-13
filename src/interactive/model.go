@@ -5,23 +5,24 @@ import (
 )
 
 type Model struct {
-	Fields map[string]Field
+	Fields map[string]Field `json:"fields"`
 }
 
-func (f *Model) Scan() error {
-	model := Model{
-		Fields: map[string]Field{},
-	}
+func (m *Model) Scan() error {
 	for true {
 		var name string
-		fmt.Println("Insert field name (or empty to finish): ", correctTypes)
+		fmt.Print("Insert field name (or empty to finish): ")
 		fmt.Scanln(&name)
 		if name == "" {
 			break
 		}
-		field := Field{}
-		field.Scan()
-		model.Fields[name] = field
+		field := Field{
+			Attrs: []string{},
+		}
+		if err := field.Scan(); err != nil {
+			return err
+		}
+		m.Fields[name] = field
 	}
 	return nil
 }
