@@ -35,6 +35,10 @@ func main() {
 	case "workspace:cache:clean":
 		command.CleanWorkspaceCacheCommand(settings, os.Args[2:])
 
+	//generator
+	case "generator:run":
+		command.RunGeneratorCommand(settings, os.Args[2:])
+
 	//packages
 	case "packages:add":
 		command.AddPackagCommand(settings, os.Args[2:])
@@ -45,6 +49,9 @@ func main() {
 	//resources
 	case "resource:add":
 		command.AddResourceCommand(settings, os.Args[2:])
+
+	case "resource:model:add":
+		command.AddModelResourceCommand(settings, os.Args[2:])
 
 	//module
 	case "module:add":

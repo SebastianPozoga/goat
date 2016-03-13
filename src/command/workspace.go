@@ -3,6 +3,7 @@ package command
 import (
 	"fmt"
 	"github.com/goatcms/goat-core/filesystem"
+	"github.com/goatcms/goat-core/scaffolding"
 	"github.com/goatcms/goat-core/workspace"
 	"github.com/goatcms/goat/src/settings"
 	"os"
@@ -53,11 +54,35 @@ func NewWorkspaceCommand(s *settings.Settings, args []string) {
 		fmt.Println("Create new workspace object fail", err)
 		os.Exit(1)
 	}
-	if err := w.Create(); err != nil {
-		fmt.Println("Create new workspace fail", err)
-		os.Exit(1)
+
+	if len(args) < 2 {
+		// if a user didn't set source repository, build from cache
+		if err := w.CreateFromCache(); err != nil {
+			fmt.Println("Create new workspace (from default/cached repository) fail", err)
+			os.Exit(1)
+		}
+	} else {
+		// if a user set source repository, build from remote repository
+		if err := w.CreateFromRepo(args[1]); err != nil {
+			fmt.Println("Create new workspace (from remote repository) fail", err)
+			os.Exit(1)
+		}
 	}
 
+	//build submodules
+	if scaffolding.IsScaffoldingDir(args[0]) {
+		s, err := scaffolding.ReadScaffolding(w, args[0])
+		if err != nil {
+			fmt.Println("Read scaffolfing fail", err)
+			os.Exit(1)
+		}
+		if err := s.BuildAllSubModules(); err != nil {
+			fmt.Println("Build submodules fail", err)
+			os.Exit(1)
+		}
+	}
+
+	//set new workspace
 	s.Workspace = w.GetAbsPath()
 	if err = s.Write(); err != nil {
 		fmt.Println("no write goat setting file", err)

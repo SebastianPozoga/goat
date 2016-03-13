@@ -27,12 +27,6 @@ func AddModuleCommand(s *settings.Settings, args []string) {
 		os.Exit(1)
 	}
 
-	scaff, err := scaffolding.NewScaffolding(w, s.Workspace)
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
-
 	if _, err1 := w.Packages.Get(depId); err1 != nil {
     var err2 error
 		if depId, err2 = w.Packages.CreteRecord(depId); err2 != nil {
@@ -50,6 +44,12 @@ func AddModuleCommand(s *settings.Settings, args []string) {
 			fmt.Println(err2)
 			os.Exit(1)
     }
+	}
+
+	scaff, err := scaffolding.NewScaffolding(w, s.Workspace)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
 	}
 
 	m, err := scaff.AddModule(depId, dest)
