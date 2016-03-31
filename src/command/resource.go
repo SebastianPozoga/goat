@@ -67,7 +67,7 @@ func addResource(s *settings.Settings, resourceType, name string, data interface
 		Data: data,
 	}
 
-	scaff, err := scaffolding.NewScaffolding(w, s.Workspace)
+	scaff, err := scaffolding.ReadScaffolding(w, s.Workspace)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)

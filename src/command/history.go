@@ -14,7 +14,7 @@ func BuildHistoryCommand(s *settings.Settings, args []string) {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-  scaff, err := scaffolding.NewScaffolding(w, s.Workspace)
+  scaff, err := scaffolding.ReadScaffolding(w, s.Workspace)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
